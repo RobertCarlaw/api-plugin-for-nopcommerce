@@ -39,6 +39,7 @@ namespace Nop.Plugin.Api.Controllers
         private readonly IFactory<ShoppingCartItem> _factory;
         private readonly IShoppingCartFactory<Product> _productShoppingCartFactory;
         private readonly IShoppingCartFactory<Customer> _customerShoppingCartFactory;
+        private readonly IShoppingCartFactory<string> _productAttributeCartFactory;
 
         public ShoppingCartItemsController(IShoppingCartItemApiService shoppingCartItemApiService, 
             IJsonFieldsSerializer jsonFieldsSerializer, 
@@ -51,7 +52,7 @@ namespace Nop.Plugin.Api.Controllers
             ILocalizationService localizationService, 
             IShoppingCartService shoppingCartService, 
             IFactory<ShoppingCartItem> factory,
-            IPictureService pictureService, IShoppingCartFactory<Product> productShoppingCartFactory, IShoppingCartFactory<Customer> customerShoppingCartFactory)
+            IPictureService pictureService, IShoppingCartFactory<Product> productShoppingCartFactory, IShoppingCartFactory<Customer> customerShoppingCartFactory, IShoppingCartFactory<string> productAttributeCartFactory)
             :base(jsonFieldsSerializer, 
                  aclService, 
                  customerService, 
@@ -67,6 +68,7 @@ namespace Nop.Plugin.Api.Controllers
             _factory = factory;
             _productShoppingCartFactory = productShoppingCartFactory;
             _customerShoppingCartFactory = customerShoppingCartFactory;
+            _productAttributeCartFactory = productAttributeCartFactory;
         }
 
         /// <summary>
@@ -183,7 +185,7 @@ namespace Nop.Plugin.Api.Controllers
                 return Error(HttpStatusCode.NotFound, "product", "not found");
             }
 
-            Customer customer = _customerShoppingCartFactory.CreateFor(shoppingCartItemDelta.Dto); // _customerService.GetCustomerById(shoppingCartItemDelta.Dto.CustomerId.Value);
+            Customer customer = _customerShoppingCartFactory.CreateFor(shoppingCartItemDelta.Dto); 
 
             if (customer == null)
             {
@@ -198,7 +200,9 @@ namespace Nop.Plugin.Api.Controllers
                 newShoppingCartItem.RentalEndDateUtc = null;
             }
 
-            IList<string> warnings = _shoppingCartService.AddToCart(customer, product, shoppingCartType, 0, null, 0M, 
+            string xmlAttributes = _productAttributeCartFactory.CreateFor(shoppingCartItemDelta.Dto);
+
+            IList<string> warnings = _shoppingCartService.AddToCart(customer, product, shoppingCartType, 0, xmlAttributes, 0M, 
                                         shoppingCartItemDelta.Dto.RentalStartDateUtc, shoppingCartItemDelta.Dto.RentalEndDateUtc,
                                         shoppingCartItemDelta.Dto.Quantity ?? 1);
 
@@ -221,7 +225,7 @@ namespace Nop.Plugin.Api.Controllers
             var shoppingCartsRootObject = new ShoppingCartItemsRootObject();
 
             shoppingCartsRootObject.ShoppingCartItems.Add(newShoppingCartItemDto);
-
+            shoppingCartsRootObject.CustomerGuid = customer.CustomerGuid.ToString();
             var json = _jsonFieldsSerializer.Serialize(shoppingCartsRootObject, string.Empty);
 
             return new RawJsonActionResult(json);

@@ -99,7 +99,7 @@ namespace Nop.Plugin.Api.DTOs.ShoppingCarts
         public int? CustomerId { get; set; }
 
         [JsonProperty("customer_guid")]
-        public Guid CustomerGuid { get; set; }
+        public string CustomerGuid { get; set; }
 
         /// <summary>
         /// Gets or sets the customer
@@ -109,5 +109,8 @@ namespace Nop.Plugin.Api.DTOs.ShoppingCarts
 
         [JsonProperty("is_guest_user")]
         public bool IsGuestUser { get; set; }
+
+        [JsonProperty("product_attributes")]
+        public List<CartItemProductAttributeDto> ProductAttributes { get; set; }
     }
 }

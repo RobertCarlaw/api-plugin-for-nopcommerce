@@ -35,9 +35,9 @@ namespace Nop.Plugin.Api.Factories
             {
                 customer = _customerService.GetCustomerById(model.CustomerId.Value);
             }
-            else if (model.CustomerGuid == Guid.Empty)
+            else if (!string.IsNullOrEmpty(model.CustomerGuid))
             {
-                customer = _customerService.GetCustomerByGuid(model.CustomerGuid);
+                customer = _customerService.GetCustomerByGuid(Guid.Parse(model.CustomerGuid));
             }
 
             return customer ?? (_customerService.InsertGuestCustomer());

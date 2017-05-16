@@ -251,6 +251,7 @@
     <Compile Include="DTOs\OrderItems\OrderItemsCountRootObject.cs" />
     <Compile Include="DTOs\OrderItems\OrderItemsRootObject.cs" />
     <Compile Include="DTOs\Products\ProductAttributeValueDto.cs" />
+    <Compile Include="DTOs\ShoppingCarts\CartItemProductAttributeDto.cs" />
     <Compile Include="DTOs\Stores\StoreDto.cs" />
     <Compile Include="DTOs\Products\ProductAttributeMappingDto.cs" />
     <Compile Include="DTOs\Stores\StoresRootObject.cs" />
@@ -258,6 +259,7 @@
     <Compile Include="Factories\CustomerFactory.cs" />
     <Compile Include="Factories\IShoppingCartFactory.cs" />
     <Compile Include="Factories\OrderFactory.cs" />
+    <Compile Include="Factories\ProductAttributeFactory.cs" />
     <Compile Include="Factories\ProductFactory.cs" />
     <Compile Include="Factories\ShoppingCartItemFactory.cs" />
     <Compile Include="Helpers\CustomerRolesHelper.cs" />
