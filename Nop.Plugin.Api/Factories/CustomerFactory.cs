@@ -1,10 +1,19 @@
 ﻿using System;
 using Nop.Core.Domain.Customers;
+using Nop.Plugin.Api.DTOs.ShoppingCarts;
+using Nop.Services.Customers;
 
 namespace Nop.Plugin.Api.Factories
 {
-    public class CustomerFactory : IFactory<Customer>
+    public class CustomerFactory : IFactory<Customer>, IShoppingCartFactory<Customer>
     {
+        private readonly ICustomerService _customerService;
+
+        public CustomerFactory(ICustomerService customerService)
+        {
+            _customerService = customerService;
+        }
+
         public Customer Initialize()
         {
             var defaultCustomer = new Customer()
@@ -16,6 +25,22 @@ namespace Nop.Plugin.Api.Factories
             };
 
             return defaultCustomer;
+        }
+
+        public Customer CreateFor(ShoppingCartItemDto model)
+        {
+            Customer customer = null;
+
+            if (model.CustomerId.HasValue)  
+            {
+                customer = _customerService.GetCustomerById(model.CustomerId.Value);
+            }
+            else if (model.CustomerGuid == Guid.Empty)
+            {
+                customer = _customerService.GetCustomerByGuid(model.CustomerGuid);
+            }
+
+            return customer ?? (_customerService.InsertGuestCustomer());
         }
     }
 }

@@ -36,9 +36,9 @@ namespace Nop.Plugin.Api.Controllers
     {
         private readonly IShoppingCartItemApiService _shoppingCartItemApiService;
         private readonly IShoppingCartService _shoppingCartService;
-        private readonly IProductService _productService;
         private readonly IFactory<ShoppingCartItem> _factory;
         private readonly IShoppingCartFactory<Product> _productShoppingCartFactory;
+        private readonly IShoppingCartFactory<Customer> _customerShoppingCartFactory;
 
         public ShoppingCartItemsController(IShoppingCartItemApiService shoppingCartItemApiService, 
             IJsonFieldsSerializer jsonFieldsSerializer, 
@@ -50,9 +50,8 @@ namespace Nop.Plugin.Api.Controllers
             ICustomerActivityService customerActivityService,
             ILocalizationService localizationService, 
             IShoppingCartService shoppingCartService, 
-            IProductService productService, 
             IFactory<ShoppingCartItem> factory,
-            IPictureService pictureService, IShoppingCartFactory<Product> productShoppingCartFactory)
+            IPictureService pictureService, IShoppingCartFactory<Product> productShoppingCartFactory, IShoppingCartFactory<Customer> customerShoppingCartFactory)
             :base(jsonFieldsSerializer, 
                  aclService, 
                  customerService, 
@@ -65,9 +64,9 @@ namespace Nop.Plugin.Api.Controllers
         {
             _shoppingCartItemApiService = shoppingCartItemApiService;
             _shoppingCartService = shoppingCartService;
-            _productService = productService;
             _factory = factory;
             _productShoppingCartFactory = productShoppingCartFactory;
+            _customerShoppingCartFactory = customerShoppingCartFactory;
         }
 
         /// <summary>
@@ -184,7 +183,7 @@ namespace Nop.Plugin.Api.Controllers
                 return Error(HttpStatusCode.NotFound, "product", "not found");
             }
 
-            Customer customer = _customerService.GetCustomerById(shoppingCartItemDelta.Dto.CustomerId.Value);
+            Customer customer = _customerShoppingCartFactory.CreateFor(shoppingCartItemDelta.Dto); // _customerService.GetCustomerById(shoppingCartItemDelta.Dto.CustomerId.Value);
 
             if (customer == null)
             {

@@ -111,6 +111,7 @@ namespace Nop.Plugin.Api.Infrastructure
 
             builder.RegisterType<ProductFactory>().As<IShoppingCartFactory<Product>>().InstancePerLifetimeScope();
             builder.RegisterType<MeasureSettings>().As<IMeasureSettings>().InstancePerLifetimeScope();
+            builder.RegisterType<CustomerFactory>().As<IShoppingCartFactory<Customer>>().InstancePerLifetimeScope();
         }
 
         public int Order { get; }

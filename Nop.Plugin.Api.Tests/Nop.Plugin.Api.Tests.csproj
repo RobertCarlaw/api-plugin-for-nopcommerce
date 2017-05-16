@@ -116,6 +116,9 @@
     <Compile Include="ConvertersTests\ApiTypeConverter\ApiTypeConverterTests_ToIntNullable.cs" />
     <Compile Include="ConvertersTests\ApiTypeConverter\ApiTypeConverterTests_ToInt.cs" />
     <Compile Include="ConvertersTests\ApiTypeConverter\ApiTypeConverterTests_ToStatus.cs" />
+    <Compile Include="FactoryTests\CustomerFactoryTests\WhenTestingWithCustomerGuid.cs" />
+    <Compile Include="FactoryTests\CustomerFactoryTests\WhenTestingWithCustomerId.cs" />
+    <Compile Include="FactoryTests\CustomerFactoryTests\WhenTestingWithNoIdOrGuid.cs" />
     <Compile Include="FactoryTests\ProductFactoryTests\WhenTestingCreateForWithProductId.cs" />
     <Compile Include="FactoryTests\ProductFactoryTests\WhenTestingCreateForWithProductSku.cs" />
     <Compile Include="ModelBinderTests\DummyObjects\DummyModel.cs" />

@@ -78,7 +78,7 @@ namespace Nop.Plugin.Api.Validators
         private void SetCustomerIdRule()
         {
             RuleFor(x => x.CustomerId)
-                   .NotNull()
+                   .NotNull().When(a => !a.IsGuestUser)
                    .WithMessage("Please, set customer id");
         }
 

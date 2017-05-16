@@ -98,10 +98,16 @@ namespace Nop.Plugin.Api.DTOs.ShoppingCarts
         [JsonProperty("customer_id")]
         public int? CustomerId { get; set; }
 
+        [JsonProperty("customer_guid")]
+        public Guid CustomerGuid { get; set; }
+
         /// <summary>
         /// Gets or sets the customer
         /// </summary>
         [JsonProperty("customer")]
         public CustomerForShoppingCartItemDto CustomerDto { get; set; }
+
+        [JsonProperty("is_guest_user")]
+        public bool IsGuestUser { get; set; }
     }
 }
