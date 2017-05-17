@@ -1,15 +1,17 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Threading;
 using System.Web.Http;
-using System.Web.Http.Results;
 using AutoMock;
+using Newtonsoft.Json;
 using Nop.Core.Domain.Orders;
 using Nop.Plugin.Api.Controllers;
 using Nop.Plugin.Api.DTOs.ShoppingCarts;
 using Nop.Plugin.Api.Models.ShoppingCartsParameters;
 using Nop.Plugin.Api.Serializers;
 using Nop.Plugin.Api.Services;
+using Nop.Services.Catalog;
 using NUnit.Framework;
 using Rhino.Mocks;
 
@@ -18,6 +20,40 @@ namespace Nop.Plugin.Api.Tests.ControllersTests.ShoppingCartItems
     [TestFixture]
     public class ShoppingCartItemsControllerTests_GetShoppingCartItemsByCustomerId
     {
+
+        [Test]
+        public void WhenReturnedShouldCalculateSubTotals_ShouldReturnValidRepsonse()
+        {
+            var parameters = new ShoppingCartItemsForCustomerParametersModel();
+            var autoMocker = new RhinoAutoMocker<ShoppingCartItemsController>(new JsonFieldsSerializer());
+
+            var item1 = new ShoppingCartItem() {Id = 1};
+            var item2 = new ShoppingCartItem() {Id = 2};
+
+            autoMocker.Get<IShoppingCartItemApiService>()
+                .Stub(a => a.GetShoppingCartItems(Arg<int>.Is.Anything, Arg<DateTime>.Is.Anything, Arg<DateTime>.Is.Anything, Arg<DateTime>.Is.Anything, Arg<DateTime>.Is.Anything, Arg<int>.Is.Anything, Arg<int>.Is.Anything))
+                .Return(new List<ShoppingCartItem>() {item1,item2 });
+
+            autoMocker.Get<IPriceCalculationService>()
+                .Stub(a => a.GetUnitPrice(Arg<ShoppingCartItem>.Is.Equal(item1),Arg<bool>.Is.Anything))
+                .Return(9.99m);
+
+            autoMocker.Get<IPriceCalculationService>()
+              .Stub(a => a.GetUnitPrice(Arg<ShoppingCartItem>.Is.Equal(item2), Arg<bool>.Is.Anything))
+              .Return(1.99m);
+
+            IHttpActionResult httpActionResult = autoMocker.ClassUnderTest.GetShoppingCartItemsByCustomerId(2, parameters);
+            var result = httpActionResult.ExecuteAsync(new CancellationToken()).Result;
+            var str = result.Content.ReadAsStringAsync().Result;// .ReadAsStringAsync().Result;
+           
+            var cart = JsonConvert.DeserializeObject<ShoppingCartItemsRootObject>(str);
+
+            Assert.AreEqual(cart.ShoppingCartItems.Count,2);
+            Assert.AreEqual(cart.ShoppingCartItems[0].LineTotal,9.99m);
+            Assert.AreEqual(cart.ShoppingCartItems[1].LineTotal, 1.99m);
+            Assert.AreEqual(cart.SubTotal,11.98m);
+        }
+
         [Test]
         [TestCase(0)]
         [TestCase(-20)]

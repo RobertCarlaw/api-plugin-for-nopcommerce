@@ -15,8 +15,11 @@ namespace Nop.Plugin.Api.DTOs.ShoppingCarts
         [JsonProperty("shopping_carts")]
         public IList<ShoppingCartItemDto> ShoppingCartItems { get; set; }
 
-        [JsonProperty("customer_guid")]
-        public string CustomerGuid { get; set; }
+        [JsonProperty("sub_total")]
+        public decimal SubTotal { get; set; }
+
+        [JsonProperty("customer_id")]
+        public int CustomerId { get; set; }
 
         public string GetPrimaryPropertyName()
         {

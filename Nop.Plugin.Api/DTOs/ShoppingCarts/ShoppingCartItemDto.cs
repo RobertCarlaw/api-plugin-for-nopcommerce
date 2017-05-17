@@ -112,5 +112,8 @@ namespace Nop.Plugin.Api.DTOs.ShoppingCarts
 
         [JsonProperty("product_attributes")]
         public List<CartItemProductAttributeDto> ProductAttributes { get; set; }
+
+        [JsonProperty("line_total")]
+        public decimal LineTotal { get; set; }
     }
 }
