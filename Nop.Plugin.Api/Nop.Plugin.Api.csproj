@@ -257,6 +257,7 @@
     <Compile Include="DTOs\Stores\StoresRootObject.cs" />
     <Compile Include="Factories\AddressFactory.cs" />
     <Compile Include="Factories\CustomerFactory.cs" />
+    <Compile Include="Factories\IMapper.cs" />
     <Compile Include="Factories\IShoppingCartFactory.cs" />
     <Compile Include="Factories\OrderFactory.cs" />
     <Compile Include="Factories\ProductAttributeFactory.cs" />

@@ -41,6 +41,7 @@ namespace Nop.Plugin.Api.Controllers
         private readonly IShoppingCartFactory<Customer> _customerShoppingCartFactory;
         private readonly IShoppingCartFactory<string> _productAttributeCartFactory;
         private readonly IPriceCalculationService _priceCalculationService;
+        private readonly IMapper<string, List<CartItemProductAttributeDto>> _productAttributeXmlToListMapper;
 
         public ShoppingCartItemsController(IShoppingCartItemApiService shoppingCartItemApiService, 
             IJsonFieldsSerializer jsonFieldsSerializer, 
@@ -53,7 +54,7 @@ namespace Nop.Plugin.Api.Controllers
             ILocalizationService localizationService, 
             IShoppingCartService shoppingCartService, 
             IFactory<ShoppingCartItem> factory,
-            IPictureService pictureService, IShoppingCartFactory<Product> productShoppingCartFactory, IShoppingCartFactory<Customer> customerShoppingCartFactory, IShoppingCartFactory<string> productAttributeCartFactory, IPriceCalculationService priceCalculationService)
+            IPictureService pictureService, IShoppingCartFactory<Product> productShoppingCartFactory, IShoppingCartFactory<Customer> customerShoppingCartFactory, IShoppingCartFactory<string> productAttributeCartFactory, IPriceCalculationService priceCalculationService, IMapper<string, List<CartItemProductAttributeDto>> productAttributeXmlToListMapper)
             :base(jsonFieldsSerializer, 
                  aclService, 
                  customerService, 
@@ -71,6 +72,7 @@ namespace Nop.Plugin.Api.Controllers
             _customerShoppingCartFactory = customerShoppingCartFactory;
             _productAttributeCartFactory = productAttributeCartFactory;
             _priceCalculationService = priceCalculationService;
+            _productAttributeXmlToListMapper = productAttributeXmlToListMapper;
         }
 
         /// <summary>
@@ -157,7 +159,10 @@ namespace Nop.Plugin.Api.Controllers
 
             foreach (var item in shoppingCartItemsDtos)
             {
-                item.LineTotal = _priceCalculationService.GetUnitPrice(shoppingCartItems.FirstOrDefault(a => a.Id.ToString() == item.Id));
+                var shoppingcartItem = shoppingCartItems.FirstOrDefault(a => a.Id.ToString() == item.Id);
+
+                item.LineTotal = _priceCalculationService.GetUnitPrice(shoppingcartItem);
+                item.ProductAttributes = _productAttributeXmlToListMapper.Map(shoppingcartItem.AttributesXml);
             }
 
             var shoppingCartsRootObject = new ShoppingCartItemsRootObject()

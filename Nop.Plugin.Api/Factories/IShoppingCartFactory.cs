@@ -7,6 +7,5 @@ namespace Nop.Plugin.Api.Factories
     public interface IShoppingCartFactory<out T>
     {
         T CreateFor(ShoppingCartItemDto model);
-
     }
 }

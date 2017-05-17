@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Autofac;
 using Autofac.Core;
 using Microsoft.AspNet.WebHooks;
@@ -20,6 +21,7 @@ using Nop.Plugin.Api.DTOs.Categories;
 using Nop.Plugin.Api.DTOs.OrderItems;
 using Nop.Plugin.Api.DTOs.Orders;
 using Nop.Plugin.Api.DTOs.ProductCategoryMappings;
+using Nop.Plugin.Api.DTOs.ShoppingCarts;
 using Nop.Plugin.Api.Factories;
 using Nop.Plugin.Api.Helpers;
 using Nop.Plugin.Api.ModelBinders;
@@ -113,6 +115,7 @@ namespace Nop.Plugin.Api.Infrastructure
             builder.RegisterType<MeasureSettings>().As<IMeasureSettings>().InstancePerLifetimeScope();
             builder.RegisterType<CustomerFactory>().As<IShoppingCartFactory<Customer>>().InstancePerLifetimeScope();
             builder.RegisterType<ProductAttributeFactory>().As<IShoppingCartFactory<string>>().InstancePerLifetimeScope();
+            builder.RegisterType<ProductAttributeFactory>().As<IMapper<string, List<CartItemProductAttributeDto>>>().InstancePerLifetimeScope();
 
         }
 

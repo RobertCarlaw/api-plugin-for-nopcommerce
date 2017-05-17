@@ -1,10 +1,13 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
+using Nop.Core.Domain.Catalog;
+using Nop.Plugin.Api.DataStructures;
 using Nop.Plugin.Api.DTOs.ShoppingCarts;
 using Nop.Services.Catalog;
 
 namespace Nop.Plugin.Api.Factories
 {
-    public class ProductAttributeFactory : IShoppingCartFactory<string>
+    public class ProductAttributeFactory : IShoppingCartFactory<string>, IMapper<string,List<CartItemProductAttributeDto>>
     {
         private readonly IProductAttributeService _productAttributeService;
         private readonly IProductAttributeParser _productAttributeParser;
@@ -36,6 +39,22 @@ namespace Nop.Plugin.Api.Factories
                 }
                 return attributesXml;
             });
+        }
+
+        public List<CartItemProductAttributeDto> Map(string item)
+        {
+            IList<ProductAttributeValue> productAttributesValues = _productAttributeParser.ParseProductAttributeValues(item);
+            List<CartItemProductAttributeDto> model = new List<CartItemProductAttributeDto>();
+
+            foreach (var att in productAttributesValues)
+            {
+                model.Add(new CartItemProductAttributeDto()
+                {
+                    Attribute = att.ProductAttributeMapping.ProductAttribute.Name,
+                    SelectedValue =  att.Name
+                });
+            }
+            return model;
         }
     }
 }
