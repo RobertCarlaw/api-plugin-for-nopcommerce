@@ -161,7 +161,7 @@ namespace Nop.Plugin.Api.Controllers
             {
                 var shoppingcartItem = shoppingCartItems.FirstOrDefault(a => a.Id.ToString() == item.Id);
 
-                item.LineTotal = _priceCalculationService.GetUnitPrice(shoppingcartItem);
+                item.SubTotal = _priceCalculationService.GetSubTotal(shoppingcartItem);
                 item.ProductAttributes = _productAttributeXmlToListMapper.Map(shoppingcartItem.AttributesXml);
             }
 
@@ -169,7 +169,7 @@ namespace Nop.Plugin.Api.Controllers
             {
                 ShoppingCartItems = shoppingCartItemsDtos,
                 CustomerId = customerId,
-                SubTotal = shoppingCartItemsDtos.Sum(a=>a.LineTotal)
+                SubTotal = shoppingCartItemsDtos.Sum(a=>a.SubTotal)
             };
 
             var json = _jsonFieldsSerializer.Serialize(shoppingCartsRootObject, parameters.Fields);
@@ -187,8 +187,6 @@ namespace Nop.Plugin.Api.Controllers
                 return Error();
             }
 
-            
-            
             // We know that the product id and customer id will be provided because they are required by the validator.
             // TODO: validate
             Product product = _productShoppingCartFactory.CreateFor(shoppingCartItemDelta.Dto);
@@ -266,14 +264,27 @@ namespace Nop.Plugin.Api.Controllers
                 return Error(HttpStatusCode.NotFound, "shopping_cart_item", "not found");
             }
 
+            Product product = _productShoppingCartFactory.CreateFor(shoppingCartItemDelta.Dto);
+
+            if (product == null)
+            {
+                return Error(HttpStatusCode.NotFound, "product", "not found");
+            }
+
+            Customer customer = _customerShoppingCartFactory.CreateFor(shoppingCartItemDelta.Dto);
+
+            if (customer == null)
+            {
+                return Error(HttpStatusCode.NotFound, "customer", "not found");
+            }
+
+            shoppingCartItemForUpdate.AttributesXml = _productAttributeCartFactory.CreateFor(shoppingCartItemDelta.Dto);
             // Here we make sure that  the product id and the customer id won't be modified.
-            int productId = shoppingCartItemForUpdate.ProductId;
-            int customerId = shoppingCartItemForUpdate.CustomerId;
 
             shoppingCartItemDelta.Merge(shoppingCartItemForUpdate);
 
-            shoppingCartItemForUpdate.ProductId = productId;
-            shoppingCartItemForUpdate.CustomerId = customerId;
+            shoppingCartItemForUpdate.ProductId = product.Id;
+            shoppingCartItemForUpdate.CustomerId = customer.Id;
             
             if (!shoppingCartItemForUpdate.Product.IsRental)
             {
