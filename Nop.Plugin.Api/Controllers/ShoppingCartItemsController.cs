@@ -215,7 +215,7 @@ namespace Nop.Plugin.Api.Controllers
 
             string xmlAttributes = _productAttributeCartFactory.CreateFor(shoppingCartItemDelta.Dto);
 
-            IList<string> warnings = _shoppingCartService.AddToCart(customer, product, shoppingCartType, 0, xmlAttributes, 0M, 
+            IList<string> warnings = _shoppingCartService.AddToCart(customer, product, shoppingCartType, 2, xmlAttributes, 0M, 
                                         shoppingCartItemDelta.Dto.RentalStartDateUtc, shoppingCartItemDelta.Dto.RentalEndDateUtc,
                                         shoppingCartItemDelta.Dto.Quantity ?? 1);
 

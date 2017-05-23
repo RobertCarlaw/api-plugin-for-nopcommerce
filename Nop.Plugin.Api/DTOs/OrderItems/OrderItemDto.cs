@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using FluentValidation.Attributes;
 using Newtonsoft.Json;
 using Nop.Plugin.Api.Attributes;
 using Nop.Plugin.Api.DTOs.Products;
+using Nop.Plugin.Api.DTOs.ShoppingCarts;
 using Nop.Plugin.Api.Validators;
 
 namespace Nop.Plugin.Api.DTOs.OrderItems
@@ -111,5 +113,10 @@ namespace Nop.Plugin.Api.DTOs.OrderItems
 
         [JsonProperty("product_id")]
         public int? ProductId { get; set; }
+
+        [JsonProperty("order_attributes")]
+        public List<CartItemProductAttributeDto> ProductAttributes { get; set; }
+
+        public string AttributesXml { get; set; }
     }
 }

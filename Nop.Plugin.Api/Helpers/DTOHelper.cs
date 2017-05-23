@@ -14,6 +14,8 @@ using Nop.Plugin.Api.MappingExtensions;
 using Nop.Plugin.Api.DTOs.Categories;
 using Nop.Plugin.Api.DTOs.Customers;
 using Nop.Plugin.Api.DTOs.Orders;
+using Nop.Plugin.Api.DTOs.ShoppingCarts;
+using Nop.Plugin.Api.Factories;
 using Nop.Plugin.Api.Services;
 using Nop.Services.Media;
 
@@ -27,13 +29,14 @@ namespace Nop.Plugin.Api.Helpers
         private IPictureService _pictureService;
         private IProductAttributeService _productAttributeService;
         private ICustomerApiService _customerApiService;
+        private readonly IMapper<string, List<CartItemProductAttributeDto>> _productAttributeXmlToListMapper;
 
         public DTOHelper(IProductService productService,
             IAclService aclService,
             IStoreMappingService storeMappingService,
             IPictureService pictureService,
             IProductAttributeService productAttributeService,
-            ICustomerApiService customerApiService)
+            ICustomerApiService customerApiService, IMapper<string, List<CartItemProductAttributeDto>> productAttributeXmlToListMapper)
         {
             _productService = productService;
             _aclService = aclService;
@@ -41,6 +44,7 @@ namespace Nop.Plugin.Api.Helpers
             _pictureService = pictureService;
             _productAttributeService = productAttributeService;
             _customerApiService = customerApiService;
+            _productAttributeXmlToListMapper = productAttributeXmlToListMapper;
         }
 
         public ProductDto PrepareProductDTO(Product product)
@@ -88,6 +92,11 @@ namespace Nop.Plugin.Api.Helpers
         public OrderDto PrepareOrderDTO(Order order)
         {
             OrderDto orderDto = order.ToDto();
+
+            foreach (var line in orderDto.OrderItemDtos)
+            {
+                line.ProductAttributes = _productAttributeXmlToListMapper.Map(line.AttributesXml);
+            }
 
             CustomerDto customerDto = _customerApiService.GetCustomerById(order.Customer.Id);
 

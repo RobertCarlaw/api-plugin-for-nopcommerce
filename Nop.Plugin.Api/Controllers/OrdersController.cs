@@ -195,6 +195,7 @@ namespace Nop.Plugin.Api.Controllers
             var ordersRootObject = new OrdersRootObject();
 
             OrderDto orderDto = _dtoHelper.PrepareOrderDTO(order);
+
             ordersRootObject.Orders.Add(orderDto);
 
             var json = _jsonFieldsSerializer.Serialize(ordersRootObject, fields);
@@ -232,6 +233,10 @@ namespace Nop.Plugin.Api.Controllers
             {
                 return Error();
             }
+
+
+        //    orderDelta.Dto.ShippingMethod = "Ground";
+       //     orderDelta.Dto.ShippingRateComputationMethodSystemName = "Shipping.FixedOrByWeight";
 
             // We doesn't have to check for value because this is done by the order validator.
             Customer customer = _customerService.GetCustomerById(orderDelta.Dto.CustomerId.Value);
@@ -321,7 +326,7 @@ namespace Nop.Plugin.Api.Controllers
             _customerActivityService.InsertActivity("AddNewOrder",
                  _localizationService.GetResource("ActivityLog.AddNewOrder"), newOrder.Id);
 
-            var ordersRootObject = new OrdersRootObject();
+            var ordersRootObject = new OrdersRootObject() {Success = placeOrderResult.Success};
 
             OrderDto placedOrderDto = _dtoHelper.PrepareOrderDTO(placeOrderResult.PlacedOrder);
 

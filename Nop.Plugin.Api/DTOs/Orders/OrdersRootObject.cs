@@ -15,6 +15,9 @@ namespace Nop.Plugin.Api.DTOs.Orders
         [JsonProperty("orders")]
         public IList<OrderDto> Orders { get; set; }
 
+        [JsonProperty("order")]
+        public OrderDto Order { get; set; }
+
         public string GetPrimaryPropertyName()
         {
             return "orders";
@@ -24,5 +27,8 @@ namespace Nop.Plugin.Api.DTOs.Orders
         {
             return typeof (OrderDto);
         }
+
+        [JsonProperty("success")]
+        public bool Success { get; set; }
     }
 }

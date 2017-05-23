@@ -49,8 +49,8 @@ namespace Nop.Plugin.Api.Tests.ControllersTests.ShoppingCartItems
             var cart = JsonConvert.DeserializeObject<ShoppingCartItemsRootObject>(str);
 
             Assert.AreEqual(cart.ShoppingCartItems.Count,2);
-            Assert.AreEqual(cart.ShoppingCartItems[0].LineTotal,9.99m);
-            Assert.AreEqual(cart.ShoppingCartItems[1].LineTotal, 1.99m);
+            Assert.AreEqual(cart.ShoppingCartItems[0].SubTotal,9.99m);
+            Assert.AreEqual(cart.ShoppingCartItems[1].SubTotal, 1.99m);
             Assert.AreEqual(cart.SubTotal,11.98m);
         }
 

@@ -242,6 +242,7 @@
     <Compile Include="Constants\WebHookNames.cs" />
     <Compile Include="Controllers\BaseApiController.cs" />
     <Compile Include="Controllers\OrderItemsController.cs" />
+    <Compile Include="Controllers\ShippingController.cs" />
     <Compile Include="DTOs\Images\ImageMappingDto.cs" />
     <Compile Include="Controllers\StoreController.cs" />
     <Compile Include="Controllers\WebHookFiltersController.cs" />
@@ -251,6 +252,9 @@
     <Compile Include="DTOs\OrderItems\OrderItemsCountRootObject.cs" />
     <Compile Include="DTOs\OrderItems\OrderItemsRootObject.cs" />
     <Compile Include="DTOs\Products\ProductAttributeValueDto.cs" />
+    <Compile Include="DTOs\Shipping\ShippingOptionDto.cs" />
+    <Compile Include="DTOs\Shipping\ShippingOptionsDtoRequest.cs" />
+    <Compile Include="DTOs\Shipping\ShippingOptionsRootObject.cs" />
     <Compile Include="DTOs\ShoppingCarts\CartItemProductAttributeDto.cs" />
     <Compile Include="DTOs\Stores\StoreDto.cs" />
     <Compile Include="DTOs\Products\ProductAttributeMappingDto.cs" />
@@ -275,6 +279,7 @@
     <Compile Include="Factories\CategoryFactory.cs" />
     <Compile Include="JSON\ActionResults\ErrorActionResult.cs" />
     <Compile Include="JSON\ActionResults\RawJsonActionResult.cs" />
+    <Compile Include="MappingExtensions\ShippingOptionDtoMappings.cs" />
     <Compile Include="MappingExtensions\StoreDtoMappings.cs" />
     <Compile Include="Maps\IJsonPropertyMap.cs" />
     <Compile Include="Maps\JsonPropertyMap.cs" />
@@ -411,6 +416,7 @@
     <Compile Include="Validators\ClientValidator.cs" />
     <Compile Include="Validators\FieldsValidator.cs" />
     <Compile Include="Validators\IFieldsValidator.cs" />
+    <Compile Include="Validators\ShippingDtoRequestValidator.cs" />
     <Compile Include="Validators\ShoppingCartItemDtoValidator.cs" />
     <Compile Include="Validators\TypeValidator.cs" />
     <Compile Include="WebHooks\ApiWebHookSender.cs" />
