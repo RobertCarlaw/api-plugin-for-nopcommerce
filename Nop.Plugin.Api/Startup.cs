@@ -190,6 +190,12 @@ namespace Nop.Plugin.Api
                 constraints: new { httpMethod = new HttpMethodConstraint(HttpMethod.Get) });
 
             config.Routes.MapHttpRoute(
+               name: "productBySku",
+               routeTemplate: "api/products/{sku}",
+               defaults: new { controller = "Products", action = "GetProductBySku" },
+               constraints: new { httpMethod = new HttpMethodConstraint(HttpMethod.Get) });
+
+            config.Routes.MapHttpRoute(
              name: "orders",
              routeTemplate: "api/orders",
              defaults: new { controller = "Orders", action = "GetOrders" },

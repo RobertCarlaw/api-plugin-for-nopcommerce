@@ -139,6 +139,35 @@ namespace Nop.Plugin.Api.Controllers
             return Ok(productsCountRootObject);
         }
 
+        [HttpGet]
+        [ResponseType(typeof(ProductsRootObjectDto))]
+        [GetRequestsErrorInterceptorActionFilter]
+        public IHttpActionResult GetProductBySku(string sku, string fields = "")
+        {
+            if (string.IsNullOrEmpty(sku))
+            {
+                return Error(HttpStatusCode.BadRequest, "sku", "invalid sku");
+            }
+
+            Product product = _productApiService.GetProductBySku(sku);
+
+            if (product == null)
+            {
+                return Error(HttpStatusCode.NotFound, "product", "not found");
+            }
+
+            ProductDto productDto = _dtoHelper.PrepareProductDTO(product);
+
+            var productsRootObject = new ProductsRootObjectDto();
+
+            productsRootObject.Products.Add(productDto);
+
+            var json = _jsonFieldsSerializer.Serialize(productsRootObject, fields);
+
+            return new RawJsonActionResult(json);
+        }
+
+
         /// <summary>
         /// Retrieve product by spcified id
         /// </summary>

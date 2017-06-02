@@ -167,8 +167,9 @@
     <Compile Include="ServicesTests\ProductCategoryMappings\GetMappings\ProductCategoryMappingsApiServiceTests_GetMappings_CategoryIdParameter.cs" />
     <Compile Include="ServicesTests\ProductCategoryMappings\GetMappings\ProductCategoryMappingsApiServiceTests_GetMappings_ProductIdParameter.cs" />
     <Compile Include="ServicesTests\ProductCategoryMappings\GetMappings\ProductCategoryMappingsApiServiceTests_GetMappings_SinceIdParameter.cs" />
-    <Compile Include="ServicesTests\Products\GetProductsCount\ProductApiServiceTests_GetProductsCount_VendorNameParameter.cs" />
     <Compile Include="ServicesTests\Products\GetProductById\ProductApiServiceTests_GetProductById.cs" />
+    <Compile Include="ServicesTests\Products\GetProductsCount\ProductApiServiceTests_GetProductsCount_VendorNameParameter.cs" />
+    <Compile Include="ServicesTests\Products\GetProductBySku\ProductApiServiceTests_GetProductBySku.cs" />
     <Compile Include="ServicesTests\Products\GetProductsCount\ProductApiServiceTests_GetProductsCount_CategoryIdParameter.cs" />
     <Compile Include="ServicesTests\Products\GetProductsCount\ProductApiServiceTests_GetProductsCount_PublishedStatusParameter.cs" />
     <Compile Include="ServicesTests\Products\GetProductsCount\ProductApiServiceTests_GetProductsCount_UpdatedParameters.cs" />

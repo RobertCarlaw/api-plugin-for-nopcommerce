@@ -51,6 +51,14 @@ namespace Nop.Plugin.Api.Services
             return query.Count();
         }
 
+        public Product GetProductBySku(string sku)
+        {
+            if (string.IsNullOrEmpty(sku))
+                return null;
+
+            return _productRepository.Table.FirstOrDefault(product => product.Sku == sku && !product.Deleted);
+        }
+
         public Product GetProductById(int productId)
         {
             if (productId == 0)
