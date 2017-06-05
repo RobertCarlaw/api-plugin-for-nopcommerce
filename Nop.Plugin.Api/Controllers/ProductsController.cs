@@ -153,7 +153,7 @@ namespace Nop.Plugin.Api.Controllers
 
             if (product == null)
             {
-                return Error(HttpStatusCode.NotFound, "product", "not found");
+                return new RawJsonActionResult("");
             }
 
             ProductDto productDto = _dtoHelper.PrepareProductDTO(product);
