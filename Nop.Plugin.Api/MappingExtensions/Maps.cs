@@ -16,6 +16,7 @@ using Nop.Plugin.Api.DTOs;
 using Nop.Plugin.Api.DTOs.Categories;
 using Nop.Plugin.Api.DTOs.OrderItems;
 using Nop.Plugin.Api.DTOs.Orders;
+using Nop.Plugin.Api.DTOs.ProductAttributeMappings;
 using Nop.Plugin.Api.DTOs.ProductCategoryMappings;
 using Nop.Plugin.Api.DTOs.Products;
 using Nop.Plugin.Api.DTOs.Shipping;
@@ -141,6 +142,8 @@ namespace Nop.Plugin.Api.MappingExtensions
             CreateCustomerToOrderCustomerDTOMap();
             CreateCustomerDTOToOrderCustomerDTOMap();
             CreateCustomerForShoppingCartItemMapFromCustomer();
+
+            CreateMap<ProductAttributeMapping, ProductAttributeMappingDto>();
 
             CreateMap<OrderItem, OrderItemDto>();
             CreateOrderEntityToOrderDtoMap();

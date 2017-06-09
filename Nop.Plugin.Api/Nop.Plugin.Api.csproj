@@ -242,6 +242,7 @@
     <Compile Include="Constants\WebHookNames.cs" />
     <Compile Include="Controllers\BaseApiController.cs" />
     <Compile Include="Controllers\OrderItemsController.cs" />
+    <Compile Include="Controllers\ProductAttributeMappingController.cs" />
     <Compile Include="Controllers\ShippingController.cs" />
     <Compile Include="DTOs\Images\ImageMappingDto.cs" />
     <Compile Include="Controllers\StoreController.cs" />
@@ -251,13 +252,14 @@
     <Compile Include="Domain\WebHooks.cs" />
     <Compile Include="DTOs\OrderItems\OrderItemsCountRootObject.cs" />
     <Compile Include="DTOs\OrderItems\OrderItemsRootObject.cs" />
-    <Compile Include="DTOs\Products\ProductAttributeValueDto.cs" />
+    <Compile Include="DTOs\ProductAttributeMappings\ProductAttributeValueDto.cs" />
+    <Compile Include="DTOs\ProductAttributeMappings\ProductAttributeMappingRootObjectDto.cs" />
     <Compile Include="DTOs\Shipping\ShippingOptionDto.cs" />
     <Compile Include="DTOs\Shipping\ShippingOptionsDtoRequest.cs" />
     <Compile Include="DTOs\Shipping\ShippingOptionsRootObject.cs" />
     <Compile Include="DTOs\ShoppingCarts\CartItemProductAttributeDto.cs" />
     <Compile Include="DTOs\Stores\StoreDto.cs" />
-    <Compile Include="DTOs\Products\ProductAttributeMappingDto.cs" />
+    <Compile Include="DTOs\ProductAttributeMappings\ProductAttributeMappingDto.cs" />
     <Compile Include="DTOs\Stores\StoresRootObject.cs" />
     <Compile Include="Factories\AddressFactory.cs" />
     <Compile Include="Factories\CustomerFactory.cs" />
@@ -279,6 +281,7 @@
     <Compile Include="Factories\CategoryFactory.cs" />
     <Compile Include="JSON\ActionResults\ErrorActionResult.cs" />
     <Compile Include="JSON\ActionResults\RawJsonActionResult.cs" />
+    <Compile Include="MappingExtensions\ProductAttributeMappingDtoMappings.cs" />
     <Compile Include="MappingExtensions\ShippingOptionDtoMappings.cs" />
     <Compile Include="MappingExtensions\StoreDtoMappings.cs" />
     <Compile Include="Maps\IJsonPropertyMap.cs" />

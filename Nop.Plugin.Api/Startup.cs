@@ -274,6 +274,30 @@ namespace Nop.Plugin.Api
                 constraints: new { httpMethod = new HttpMethodConstraint(HttpMethod.Get) });
 
             config.Routes.MapHttpRoute(
+              name: "productAttributeMappingsCreate",
+              routeTemplate: "api/product_attribute_mappings/{sku}",
+              defaults: new { controller = "ProductAttributeMapping", action = "CreateProductAttributeMapping" },
+              constraints: new { httpMethod = new HttpMethodConstraint(HttpMethod.Post) });
+
+            config.Routes.MapHttpRoute(
+             name: "productAttributeValuesCreate",
+             routeTemplate: "api/product_attribute_values/{sku}",
+             defaults: new { controller = "ProductAttributeMapping", action = "CreateProductAttributeValue" },
+             constraints: new { httpMethod = new HttpMethodConstraint(HttpMethod.Post) });
+
+            config.Routes.MapHttpRoute(
+              name: "productAttributeMappingsDelete",
+              routeTemplate: "api/product_attribute_mappings/{sku}",
+              defaults: new { controller = "ProductAttributeMapping", action = "DeleteProductAttributeMapping" },
+              constraints: new { httpMethod = new HttpMethodConstraint(HttpMethod.Put) });
+
+            config.Routes.MapHttpRoute(
+             name: "productAttributeValuesDelete",
+             routeTemplate: "api/product_attribute_values/{sku}",
+             defaults: new { controller = "ProductAttributeMapping", action = "DeleteProductAttributeValue" },
+             constraints: new { httpMethod = new HttpMethodConstraint(HttpMethod.Put) });
+
+            config.Routes.MapHttpRoute(
                name: "createShoppingCartItem",
                routeTemplate: "api/shopping_cart_items",
                defaults: new { controller = "ShoppingCartItems", action = "CreateShoppingCartItem" },

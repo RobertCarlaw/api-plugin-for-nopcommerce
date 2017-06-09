@@ -14,6 +14,7 @@ using Nop.Plugin.Api.MappingExtensions;
 using Nop.Plugin.Api.DTOs.Categories;
 using Nop.Plugin.Api.DTOs.Customers;
 using Nop.Plugin.Api.DTOs.Orders;
+using Nop.Plugin.Api.DTOs.ProductAttributeMappings;
 using Nop.Plugin.Api.DTOs.ShoppingCarts;
 using Nop.Plugin.Api.Factories;
 using Nop.Plugin.Api.Services;
@@ -216,6 +217,25 @@ namespace Nop.Plugin.Api.Helpers
             }
 
             return productAttributeValueDto;
+        }
+
+        public List<ProductAttributeMappingDto> PrepareProductAttributeMappingDtos(IEnumerable<ProductAttributeMapping> mappings)
+        {
+            var dtoMappings =new List<ProductAttributeMappingDto>();
+            if (mappings == null)
+                return dtoMappings;
+
+            foreach (var productAttributeMapping in mappings)
+            {
+                ProductAttributeMappingDto productAttributeMappingDto = PrepareProductAttributeMappingDto(productAttributeMapping);
+
+                if (productAttributeMappingDto != null)
+                {
+                    dtoMappings.Add(productAttributeMappingDto);
+                }
+            }
+
+            return dtoMappings;
         }
     }
 }

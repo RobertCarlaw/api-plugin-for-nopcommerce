@@ -69,6 +69,7 @@ namespace Nop.Plugin.Api.Infrastructure
             builder.RegisterType<WebHookRegistrationsController>().InstancePerLifetimeScope();
             builder.RegisterType<WebHookFiltersController>().InstancePerLifetimeScope();
             builder.RegisterType<ShippingController>().InstancePerLifetimeScope();
+            builder.RegisterType<ProductAttributeMappingController>().InstancePerLifetimeScope();
         }
 
         private void RegisterModelBinders(ContainerBuilder builder)

@@ -14,6 +14,7 @@ using Nop.Plugin.Api.Attributes;
 using Nop.Plugin.Api.Constants;
 using Nop.Plugin.Api.Delta;
 using Nop.Plugin.Api.DTOs.Images;
+using Nop.Plugin.Api.DTOs.ProductAttributeMappings;
 using Nop.Plugin.Api.DTOs.Products;
 using Nop.Plugin.Api.Factories;
 using Nop.Plugin.Api.JSON.ActionResults;
