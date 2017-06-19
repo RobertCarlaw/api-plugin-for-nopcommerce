@@ -48,5 +48,11 @@ namespace Nop.Plugin.Api.Models.OrdersParameters
         /// </summary>
         [JsonProperty("fields")]
         public string Fields { get; set; }
+
+        [JsonProperty("customer_name")]
+        public string CustomerName { get; set; }
+
+        [JsonProperty("customer_email")]
+        public string CustomerEmail { get; set; }
     }
 }

@@ -7,6 +7,7 @@ using Nop.Core.Domain.Payments;
 using Nop.Core.Domain.Shipping;
 using Nop.Plugin.Api.Constants;
 using Nop.Plugin.Api.DataStructures;
+using Nop.Plugin.Api.QueryExtensions;
 
 namespace Nop.Plugin.Api.Services
 {
@@ -29,16 +30,19 @@ namespace Nop.Plugin.Api.Services
             return new ApiList<Order>(query, 0, Configurations.MaxLimit);
         }
 
-        public IList<Order> GetOrders(IList<int> ids = null, DateTime? createdAtMin = null, DateTime? createdAtMax = null,
-           int limit = Configurations.DefaultLimit, int page = Configurations.DefaultPageValue, int sinceId = Configurations.DefaultSinceId, 
-           OrderStatus? status = null, PaymentStatus? paymentStatus = null, ShippingStatus? shippingStatus = null, int? customerId = null)
+        public IList<Order> GetOrders(out int totalRecords, IList<int> ids = null, DateTime? createdAtMin = null, DateTime? createdAtMax = null,
+                  int limit = Configurations.DefaultLimit, int page = Configurations.DefaultPageValue,
+                  int sinceId = Configurations.DefaultSinceId, OrderStatus? status = null, PaymentStatus? paymentStatus = null,
+                  ShippingStatus? shippingStatus = null, int? customerId = null, string customerEmail = "", string customerName = "")
         {
-            var query = GetOrdersQuery(createdAtMin, createdAtMax, status, paymentStatus, shippingStatus, ids, customerId);
+            IQueryable<Order> query = GetOrdersQuery(createdAtMin, createdAtMax, status, paymentStatus, shippingStatus, ids, customerId, customerEmail, customerName);
 
             if (sinceId > 0)
             {
                 query = query.Where(order => order.Id > sinceId);
             }
+           
+            totalRecords = query.Count();
 
             return new ApiList<Order>(query, page - 1, limit);
         }
@@ -62,9 +66,9 @@ namespace Nop.Plugin.Api.Services
 
         private IQueryable<Order> GetOrdersQuery(DateTime? createdAtMin = null, DateTime? createdAtMax = null, OrderStatus? status = null,
             PaymentStatus? paymentStatus = null, ShippingStatus? shippingStatus = null, IList<int> ids = null, 
-            int? customerId = null)
+            int? customerId = null, string customerEmail = "", string customerName = "")
         {
-            var query = _orderRepository.TableNoTracking;
+            IQueryable<Order> query = _orderRepository.TableNoTracking;
 
             if (customerId != null)
             {
@@ -93,15 +97,11 @@ namespace Nop.Plugin.Api.Services
 
             query = query.Where(order => !order.Deleted);
 
-            if (createdAtMin != null)
-            {
-                query = query.Where(order => order.CreatedOnUtc > createdAtMin.Value.ToUniversalTime());
-            }
 
-            if (createdAtMax != null)
-            {
-                query = query.Where(order => order.CreatedOnUtc < createdAtMax.Value.ToUniversalTime());
-            }
+            query = query.WithFromDateRangeFilter(createdAtMin)
+                         .WithToDateRangeFilter(createdAtMax)
+                         .WithCustomerNameFilter(customerName)
+                         .WithEmailAddressFilter(customerEmail);
 
             query = query.OrderBy(order => order.Id);
 

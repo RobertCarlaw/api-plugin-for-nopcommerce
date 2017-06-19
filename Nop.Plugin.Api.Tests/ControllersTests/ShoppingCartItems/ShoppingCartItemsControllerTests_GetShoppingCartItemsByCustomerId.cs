@@ -35,11 +35,11 @@ namespace Nop.Plugin.Api.Tests.ControllersTests.ShoppingCartItems
                 .Return(new List<ShoppingCartItem>() {item1,item2 });
 
             autoMocker.Get<IPriceCalculationService>()
-                .Stub(a => a.GetUnitPrice(Arg<ShoppingCartItem>.Is.Equal(item1),Arg<bool>.Is.Anything))
+                .Stub(a => a.GetSubTotal(Arg<ShoppingCartItem>.Is.Equal(item1),Arg<bool>.Is.Anything))
                 .Return(9.99m);
 
             autoMocker.Get<IPriceCalculationService>()
-              .Stub(a => a.GetUnitPrice(Arg<ShoppingCartItem>.Is.Equal(item2), Arg<bool>.Is.Anything))
+              .Stub(a => a.GetSubTotal(Arg<ShoppingCartItem>.Is.Equal(item2), Arg<bool>.Is.Anything))
               .Return(1.99m);
 
             IHttpActionResult httpActionResult = autoMocker.ClassUnderTest.GetShoppingCartItemsByCustomerId(2, parameters);

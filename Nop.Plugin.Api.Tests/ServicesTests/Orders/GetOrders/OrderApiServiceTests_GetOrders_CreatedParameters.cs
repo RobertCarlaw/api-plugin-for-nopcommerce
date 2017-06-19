@@ -15,7 +15,7 @@ namespace Nop.Plugin.Api.Tests.ServicesTests.Orders.GetOrders
         private IOrderApiService _orderApiService;
         private List<Order> _existigOrders;
         private DateTime _baseDate;
-
+        private int _totalOrders;
         [SetUp]
         public void Setup()
         {
@@ -49,8 +49,9 @@ namespace Nop.Plugin.Api.Tests.ServicesTests.Orders.GetOrders
 
             var expectedOrdersCount = expectedCollection.Count();
 
+
             // Act
-            var orders = _orderApiService.GetOrders(createdAtMin: createdAtMinDate);
+            var orders = _orderApiService.GetOrders(out _totalOrders,createdAtMin: createdAtMinDate);
 
             // Assert
             CollectionAssert.IsNotEmpty(orders);
@@ -65,7 +66,7 @@ namespace Nop.Plugin.Api.Tests.ServicesTests.Orders.GetOrders
             DateTime createdAtMinDate = _baseDate.AddMonths(11);
 
             // Act
-            var orders = _orderApiService.GetOrders(createdAtMin: createdAtMinDate);
+            var orders = _orderApiService.GetOrders(out _totalOrders,createdAtMin: createdAtMinDate);
 
             // Assert
             CollectionAssert.IsEmpty(orders);
@@ -80,7 +81,7 @@ namespace Nop.Plugin.Api.Tests.ServicesTests.Orders.GetOrders
             var expectedOrdersCount = expectedCollection.Count();
 
             // Act
-            var orders = _orderApiService.GetOrders(createdAtMax: createdAtMaxDate);
+            var orders = _orderApiService.GetOrders(out _totalOrders,createdAtMax: createdAtMaxDate);
 
             // Assert
             CollectionAssert.IsNotEmpty(orders);
@@ -95,7 +96,7 @@ namespace Nop.Plugin.Api.Tests.ServicesTests.Orders.GetOrders
             DateTime createdAtMaxDate = _baseDate.Subtract(new TimeSpan(365)); // subtract one year
 
             // Act
-            var orders = _orderApiService.GetOrders(createdAtMax: createdAtMaxDate);
+            var orders = _orderApiService.GetOrders(out _totalOrders,createdAtMax: createdAtMaxDate);
 
             // Assert
             CollectionAssert.IsEmpty(orders);

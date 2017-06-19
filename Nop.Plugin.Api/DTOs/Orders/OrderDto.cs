@@ -30,6 +30,12 @@ namespace Nop.Plugin.Api.DTOs.Orders
         public bool? PickUpInStore { get; set; }
 
         /// <summary>
+        /// Gets or sets the payment method
+        /// </summary>
+        [JsonProperty("payment_method")]
+        public string PaymentMethod { get; set; }
+
+        /// <summary>
         /// Gets or sets the payment method system name
         /// </summary>
         [JsonProperty("payment_method_system_name")]

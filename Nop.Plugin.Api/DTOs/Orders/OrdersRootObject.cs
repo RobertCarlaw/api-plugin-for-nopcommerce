@@ -23,6 +23,9 @@ namespace Nop.Plugin.Api.DTOs.Orders
             return "orders";
         }
 
+        [JsonProperty("total_records")]
+        public int TotalRecords { get; set; }
+
         public Type GetPrimaryPropertyType()
         {
             return typeof (OrderDto);

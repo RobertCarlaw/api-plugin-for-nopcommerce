@@ -13,7 +13,7 @@ namespace Nop.Plugin.Api.Tests.ServicesTests.Orders.GetOrders
     {
         private IOrderApiService _orderApiService;
         private List<Order> _existigOrders;
-
+        private int _totalOrders;
         [SetUp]
         public void Setup()
         {
@@ -39,7 +39,7 @@ namespace Nop.Plugin.Api.Tests.ServicesTests.Orders.GetOrders
         {
             var idsCollection = new List<int>() { 1, 5 };
 
-            var orders = _orderApiService.GetOrders(ids: idsCollection);
+            var orders = _orderApiService.GetOrders(out _totalOrders, ids: idsCollection);
 
             // Assert
             CollectionAssert.IsNotEmpty(orders);
@@ -52,7 +52,7 @@ namespace Nop.Plugin.Api.Tests.ServicesTests.Orders.GetOrders
         {
             var idsCollection = new List<int>() { 1, 5, 97373, 4 };
 
-            var orders = _orderApiService.GetOrders(ids: idsCollection);
+            var orders = _orderApiService.GetOrders(out _totalOrders, ids: idsCollection);
 
             // Assert
             CollectionAssert.IsNotEmpty(orders);
@@ -66,7 +66,7 @@ namespace Nop.Plugin.Api.Tests.ServicesTests.Orders.GetOrders
         {
             var idsCollection = new List<int>() { 2123434, 5456456, 97373, -45 };
 
-            var orders = _orderApiService.GetOrders(ids: idsCollection);
+            var orders = _orderApiService.GetOrders(out _totalOrders, ids: idsCollection);
 
             // Assert
             CollectionAssert.IsEmpty(orders);
@@ -77,7 +77,7 @@ namespace Nop.Plugin.Api.Tests.ServicesTests.Orders.GetOrders
         {
             var idsCollection = new List<int>();
 
-            var orders = _orderApiService.GetOrders(ids: idsCollection);
+            var orders = _orderApiService.GetOrders(out _totalOrders, ids: idsCollection);
 
             // Assert
             CollectionAssert.IsNotEmpty(orders);

@@ -11,6 +11,8 @@ namespace Nop.Plugin.Api.Tests.ServicesTests.Orders.GetOrders
     [TestFixture]
     public class OrderApiServiceTests_GetOrders_DefaultParameters
     {
+        private int _totalOrders;
+
         [Test]
         public void WhenCalledWithDefaultParameters_GivenNoOrdersExist_ShouldReturnEmptyCollection()
         {
@@ -20,7 +22,7 @@ namespace Nop.Plugin.Api.Tests.ServicesTests.Orders.GetOrders
             
             // Act
             var cut = new OrderApiService(ordersRepo);
-            var orders = cut.GetOrders();
+            var orders = cut.GetOrders(out _totalOrders);
 
             // Assert
             CollectionAssert.IsEmpty(orders);
@@ -39,7 +41,7 @@ namespace Nop.Plugin.Api.Tests.ServicesTests.Orders.GetOrders
             
             // Act
             var cut = new OrderApiService(orderRepo);
-            var orders = cut.GetOrders();
+            var orders = cut.GetOrders(out _totalOrders);
 
             // Assert
             CollectionAssert.IsEmpty(orders);
@@ -61,7 +63,7 @@ namespace Nop.Plugin.Api.Tests.ServicesTests.Orders.GetOrders
             
             // Act
             var cut = new OrderApiService(orderRepo);
-            var orders = cut.GetOrders();
+            var orders = cut.GetOrders(out _totalOrders);
 
             // Assert
             CollectionAssert.IsNotEmpty(orders);
@@ -85,7 +87,7 @@ namespace Nop.Plugin.Api.Tests.ServicesTests.Orders.GetOrders
             
             // Act
             var cut = new OrderApiService(orderRepo);
-            var orders = cut.GetOrders();
+            var orders = cut.GetOrders(out _totalOrders);
 
             // Assert
             CollectionAssert.IsNotEmpty(orders);

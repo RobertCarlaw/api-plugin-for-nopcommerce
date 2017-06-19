@@ -13,6 +13,7 @@ namespace Nop.Plugin.Api.Tests.ServicesTests.Orders.GetOrders
     {
         private IOrderApiService _orderApiService;
         private List<Order> _existigOrders;
+        private int _totalOrders;
 
         [SetUp]
         public void Setup()
@@ -42,7 +43,7 @@ namespace Nop.Plugin.Api.Tests.ServicesTests.Orders.GetOrders
             var expectedLimit = 5;
 
             //Act
-            var orders = _orderApiService.GetOrders(limit: expectedLimit);
+            var orders = _orderApiService.GetOrders(out _totalOrders,limit: expectedLimit);
 
             // Assert
             CollectionAssert.IsNotEmpty(orders);
@@ -56,7 +57,7 @@ namespace Nop.Plugin.Api.Tests.ServicesTests.Orders.GetOrders
             var expectedLimit = _existigOrders.Count(x => !x.Deleted);
 
             //Act
-            var orders = _orderApiService.GetOrders(limit: expectedLimit + 10);
+            var orders = _orderApiService.GetOrders(out _totalOrders, limit: expectedLimit + 10);
 
             // Assert
             CollectionAssert.IsNotEmpty(orders);
@@ -70,7 +71,7 @@ namespace Nop.Plugin.Api.Tests.ServicesTests.Orders.GetOrders
             var expectedLimit = 0;
 
             //Act
-            var orders = _orderApiService.GetOrders(limit: expectedLimit);
+            var orders = _orderApiService.GetOrders(out _totalOrders, limit: expectedLimit);
 
             // Assert
             CollectionAssert.IsEmpty(orders);
@@ -83,7 +84,7 @@ namespace Nop.Plugin.Api.Tests.ServicesTests.Orders.GetOrders
             var expectedLimit = -10;
 
             //Act
-            var orders = _orderApiService.GetOrders(limit: expectedLimit);
+            var orders = _orderApiService.GetOrders(out _totalOrders, limit: expectedLimit);
 
             // Assert
             CollectionAssert.IsEmpty(orders);

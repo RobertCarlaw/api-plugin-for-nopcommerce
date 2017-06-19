@@ -15,7 +15,7 @@ namespace Nop.Plugin.Api.Tests.ServicesTests.Orders.GetOrders
     {
         private IOrderApiService _orderApiService;
         private List<Order> _existigOrders;
-
+        private int _totalOrders;
         [SetUp]
         public void Setup()
         {
@@ -45,7 +45,7 @@ namespace Nop.Plugin.Api.Tests.ServicesTests.Orders.GetOrders
             var expectedCollection = _existigOrders.Where(x => x.OrderStatus == orderStatus).OrderBy(x => x.Id);
 
             // Act
-            var orders = _orderApiService.GetOrders(status: orderStatus);
+            var orders = _orderApiService.GetOrders(out _totalOrders,status: orderStatus);
 
             // Assert
             CollectionAssert.IsNotEmpty(orders);
@@ -62,7 +62,7 @@ namespace Nop.Plugin.Api.Tests.ServicesTests.Orders.GetOrders
             var expectedCollection = _existigOrders.Where(x => x.PaymentStatus == paymentStatus).OrderBy(x => x.Id);
 
             // Act
-            var orders = _orderApiService.GetOrders(paymentStatus: paymentStatus);
+            var orders = _orderApiService.GetOrders(out _totalOrders, paymentStatus: paymentStatus);
 
             // Assert
             CollectionAssert.IsNotEmpty(orders);
@@ -79,7 +79,7 @@ namespace Nop.Plugin.Api.Tests.ServicesTests.Orders.GetOrders
             var expectedCollection = _existigOrders.Where(x => x.ShippingStatus == shippingStatus).OrderBy(x => x.Id);
 
             // Act
-            var orders = _orderApiService.GetOrders(shippingStatus: shippingStatus);
+            var orders = _orderApiService.GetOrders(out _totalOrders, shippingStatus: shippingStatus);
 
             // Assert
             CollectionAssert.IsNotEmpty(orders);
@@ -98,9 +98,9 @@ namespace Nop.Plugin.Api.Tests.ServicesTests.Orders.GetOrders
             // Act
             var orders = new List<Order>();
 
-            List<Order> ordersByOrderStatus = _orderApiService.GetOrders(status: orderStatus).ToList();
-            List<Order> ordersByPaymentStatus = _orderApiService.GetOrders(paymentStatus: paymentStatus).ToList();
-            List<Order> ordersByShippingStatus = _orderApiService.GetOrders(shippingStatus: shippingStatus).ToList();
+            List<Order> ordersByOrderStatus = _orderApiService.GetOrders(out _totalOrders, status: orderStatus).ToList();
+            List<Order> ordersByPaymentStatus = _orderApiService.GetOrders(out _totalOrders, paymentStatus: paymentStatus).ToList();
+            List<Order> ordersByShippingStatus = _orderApiService.GetOrders(out _totalOrders, shippingStatus: shippingStatus).ToList();
 
             orders.AddRange(ordersByOrderStatus);
             orders.AddRange(ordersByPaymentStatus);

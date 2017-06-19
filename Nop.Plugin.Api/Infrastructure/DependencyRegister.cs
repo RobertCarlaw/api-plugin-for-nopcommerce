@@ -29,6 +29,7 @@ using Nop.Plugin.Api.Models;
 using Nop.Plugin.Api.Serializers;
 using Nop.Plugin.Api.Services;
 using Nop.Plugin.Api.Validators;
+using Nop.Services.Payments;
 using Nop.Services.Shipping;
 using Nop.Web.Framework.Mvc;
 
@@ -120,7 +121,7 @@ namespace Nop.Plugin.Api.Infrastructure
             builder.RegisterType<ProductAttributeFactory>().As<IShoppingCartFactory<string>>().InstancePerLifetimeScope();
             builder.RegisterType<ShippingService>().As<IShippingService>().InstancePerLifetimeScope();
             builder.RegisterType<ProductAttributeFactory>().As<IMapper<string, List<CartItemProductAttributeDto>>>().InstancePerLifetimeScope();
-
+            builder.RegisterType<PaymentService>().As<IPaymentService>().InstancePerLifetimeScope();
         }
 
         public int Order { get; }

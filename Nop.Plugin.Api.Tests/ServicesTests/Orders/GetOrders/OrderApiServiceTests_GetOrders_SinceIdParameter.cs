@@ -13,7 +13,7 @@ namespace Nop.Plugin.Api.Tests.ServicesTests.Orders.GetOrders
     {
         private IOrderApiService _orderApiService;
         private List<Order> _existigOrders;
-
+        private int _totalOrders;
         [SetUp]
         public void Setup()
         {
@@ -42,7 +42,7 @@ namespace Nop.Plugin.Api.Tests.ServicesTests.Orders.GetOrders
             var expectedCollection = _existigOrders.Where(x => x.Id > sinceId && !x.Deleted).OrderBy(x => x.Id);
 
             // Act
-            var orders = _orderApiService.GetOrders(sinceId: sinceId);
+            var orders = _orderApiService.GetOrders(out _totalOrders,sinceId: sinceId);
 
             // Assert
             CollectionAssert.IsNotEmpty(orders);
@@ -58,7 +58,7 @@ namespace Nop.Plugin.Api.Tests.ServicesTests.Orders.GetOrders
             var expectedCollection = _existigOrders.Where(x => x.Id > sinceId && !x.Deleted).OrderBy(x => x.Id);
 
             // Act
-            var orders = _orderApiService.GetOrders(sinceId: sinceId);
+            var orders = _orderApiService.GetOrders(out _totalOrders, sinceId: sinceId);
 
             // Assert
             CollectionAssert.IsNotEmpty(orders);
@@ -72,7 +72,7 @@ namespace Nop.Plugin.Api.Tests.ServicesTests.Orders.GetOrders
             int sinceId = int.MaxValue;
         
             // Act
-            var orders = _orderApiService.GetOrders(sinceId: sinceId);
+            var orders = _orderApiService.GetOrders(out _totalOrders, sinceId: sinceId);
             
             // Assert
             CollectionAssert.IsEmpty(orders);

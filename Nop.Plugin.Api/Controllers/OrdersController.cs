@@ -21,7 +21,6 @@ using Nop.Plugin.Api.DTOs.Orders;
 using Nop.Plugin.Api.Factories;
 using Nop.Plugin.Api.Helpers;
 using Nop.Plugin.Api.JSON.ActionResults;
-using Nop.Plugin.Api.MappingExtensions;
 using Nop.Plugin.Api.ModelBinders;
 using Nop.Plugin.Api.Models.OrdersParameters;
 using Nop.Plugin.Api.Serializers;
@@ -128,24 +127,27 @@ namespace Nop.Plugin.Api.Controllers
                 return Error(HttpStatusCode.BadRequest, "page", "Invalid limit parameter");
             }
 
-            IList<Order> orders = _orderApiService.GetOrders(parameters.Ids, parameters.CreatedAtMin,
+            int totalRecords;
+
+            var orders = _orderApiService.GetOrders(out totalRecords, parameters.Ids, parameters.CreatedAtMin,
                 parameters.CreatedAtMax,
                 parameters.Limit, parameters.Page, parameters.SinceId,
                 parameters.Status, parameters.PaymentStatus, parameters.ShippingStatus,
-                parameters.CustomerId);
+                parameters.CustomerId, parameters.CustomerEmail, parameters.CustomerName);
 
             IList<OrderDto> ordersAsDtos = orders.Select(x => _dtoHelper.PrepareOrderDTO(x)).ToList();
-
+       
             var ordersRootObject = new OrdersRootObject()
             {
-                Orders = ordersAsDtos
+                Orders = ordersAsDtos,
+                TotalRecords = totalRecords
             };
 
             var json = _jsonFieldsSerializer.Serialize(ordersRootObject, parameters.Fields);
 
             return new RawJsonActionResult(json);
         }
-
+        
         /// <summary>
         /// Receive a count of all Orders
         /// </summary>
@@ -233,10 +235,6 @@ namespace Nop.Plugin.Api.Controllers
             {
                 return Error();
             }
-
-
-        //    orderDelta.Dto.ShippingMethod = "Ground";
-       //     orderDelta.Dto.ShippingRateComputationMethodSystemName = "Shipping.FixedOrByWeight";
 
             // We doesn't have to check for value because this is done by the order validator.
             Customer customer = _customerService.GetCustomerById(orderDelta.Dto.CustomerId.Value);

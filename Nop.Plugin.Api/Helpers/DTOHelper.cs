@@ -19,6 +19,7 @@ using Nop.Plugin.Api.DTOs.ShoppingCarts;
 using Nop.Plugin.Api.Factories;
 using Nop.Plugin.Api.Services;
 using Nop.Services.Media;
+using Nop.Services.Payments;
 
 namespace Nop.Plugin.Api.Helpers
 {
@@ -31,13 +32,14 @@ namespace Nop.Plugin.Api.Helpers
         private IProductAttributeService _productAttributeService;
         private ICustomerApiService _customerApiService;
         private readonly IMapper<string, List<CartItemProductAttributeDto>> _productAttributeXmlToListMapper;
+        private IPaymentService _paymentService;
 
         public DTOHelper(IProductService productService,
             IAclService aclService,
             IStoreMappingService storeMappingService,
             IPictureService pictureService,
             IProductAttributeService productAttributeService,
-            ICustomerApiService customerApiService, IMapper<string, List<CartItemProductAttributeDto>> productAttributeXmlToListMapper)
+            ICustomerApiService customerApiService, IMapper<string, List<CartItemProductAttributeDto>> productAttributeXmlToListMapper, IPaymentService paymentService)
         {
             _productService = productService;
             _aclService = aclService;
@@ -46,6 +48,7 @@ namespace Nop.Plugin.Api.Helpers
             _productAttributeService = productAttributeService;
             _customerApiService = customerApiService;
             _productAttributeXmlToListMapper = productAttributeXmlToListMapper;
+            _paymentService = paymentService;
         }
 
         public ProductDto PrepareProductDTO(Product product)
@@ -93,6 +96,9 @@ namespace Nop.Plugin.Api.Helpers
         public OrderDto PrepareOrderDTO(Order order)
         {
             OrderDto orderDto = order.ToDto();
+
+            var payment = _paymentService.LoadPaymentMethodBySystemName(orderDto.PaymentMethodSystemName);
+            orderDto.PaymentMethod = payment?.PaymentMethodDescription;
 
             foreach (var line in orderDto.OrderItemDtos)
             {

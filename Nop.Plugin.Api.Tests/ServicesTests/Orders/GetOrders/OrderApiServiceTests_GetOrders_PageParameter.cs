@@ -14,6 +14,7 @@ namespace Nop.Plugin.Api.Tests.ServicesTests.Orders.GetOrders
     {
         private IOrderApiService _orderApiService;
         private List<Order> _existigOrders;
+        private int _totalOrders;
 
         [SetUp]
         public void Setup()
@@ -46,7 +47,7 @@ namespace Nop.Plugin.Api.Tests.ServicesTests.Orders.GetOrders
             var expectedCollection = new ApiList<Order>(_existigOrders.Where(x => !x.Deleted).AsQueryable(), page - 1, limit);
 
             //Act
-            var orders = _orderApiService.GetOrders(limit: limit, page: page);
+            var orders = _orderApiService.GetOrders(out _totalOrders, limit: limit, page: page);
 
             // Assert
             CollectionAssert.IsNotEmpty(orders);
@@ -63,7 +64,7 @@ namespace Nop.Plugin.Api.Tests.ServicesTests.Orders.GetOrders
             var expectedCollection = new ApiList<Order>(_existigOrders.Where(x => !x.Deleted).AsQueryable(), page - 1, limit);
 
             //Act
-            var orders = _orderApiService.GetOrders(limit: limit, page: page);
+            var orders = _orderApiService.GetOrders(out _totalOrders, limit: limit, page: page);
 
             // Assert
             CollectionAssert.IsNotEmpty(orders);
@@ -81,7 +82,7 @@ namespace Nop.Plugin.Api.Tests.ServicesTests.Orders.GetOrders
             var expectedCollection = new ApiList<Order>(_existigOrders.Where(x => !x.Deleted).AsQueryable(), page - 1, limit);
 
             //Act
-            var orders = _orderApiService.GetOrders(limit: limit, page: page);
+            var orders = _orderApiService.GetOrders(out _totalOrders, limit: limit, page: page);
 
             // Assert
             CollectionAssert.IsNotEmpty(orders);
@@ -98,7 +99,7 @@ namespace Nop.Plugin.Api.Tests.ServicesTests.Orders.GetOrders
             var page = _existigOrders.Count / limit + 100;
             
             //Act
-            var orders = _orderApiService.GetOrders(limit: limit, page: page);
+            var orders = _orderApiService.GetOrders(out _totalOrders, limit: limit, page: page);
 
             // Assert
             CollectionAssert.IsEmpty(orders);

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Threading;
 using System.Web.Http;
@@ -7,6 +8,7 @@ using AutoMock;
 using Nop.Core.Domain.Orders;
 using Nop.Plugin.Api.Constants;
 using Nop.Plugin.Api.Controllers;
+using Nop.Plugin.Api.DataStructures;
 using Nop.Plugin.Api.DTOs.Orders;
 using Nop.Plugin.Api.Models.OrdersParameters;
 using Nop.Plugin.Api.Serializers;
@@ -22,6 +24,12 @@ namespace Nop.Plugin.Api.Tests.ControllersTests.Orders
         [Test]
         public void WhenSomeValidParametersPassed_ShouldCallTheServiceWithTheSameParameters()
         {
+            var returnedOrdersCollection = new List<Order>()
+            {
+                new Order(),
+                new Order()
+            };
+
             var parameters = new OrdersParametersModel()
             {
                 SinceId = Configurations.DefaultSinceId + 1, // some different than default since id
@@ -34,14 +42,13 @@ namespace Nop.Plugin.Api.Tests.ControllersTests.Orders
 
             //Arange
             var autoMocker = new RhinoAutoMocker<OrdersController>();
-
-            autoMocker.Get<IOrderApiService>().Expect(x => x.GetOrders(parameters.Ids,
+            int totalOrders =0;
+            autoMocker.Get<IOrderApiService>().Expect(x => x.GetOrders(out totalOrders,parameters.Ids,
                                                     parameters.CreatedAtMin,
                                                     parameters.CreatedAtMax,
                                                     parameters.Limit,
                                                     parameters.Page,
-                                                    parameters.SinceId)).Return(new List<Order>());
-
+                                                    parameters.SinceId, parameters.Status, parameters.PaymentStatus,parameters.ShippingStatus,parameters.CustomerId,parameters.CustomerEmail,parameters.CustomerName)).Return(returnedOrdersCollection);
             //Act
             autoMocker.ClassUnderTest.GetOrders(parameters);
 
@@ -58,12 +65,13 @@ namespace Nop.Plugin.Api.Tests.ControllersTests.Orders
                 new Order()
             };
 
+         
             var parameters = new OrdersParametersModel();
 
             //Arange
             var autoMocker = new RhinoAutoMocker<OrdersController>();
-
-            autoMocker.Get<IOrderApiService>().Stub(x => x.GetOrders()).IgnoreArguments().Return(returnedOrdersCollection);
+            int totalOrders;
+            autoMocker.Get<IOrderApiService>().Stub(x => x.GetOrders(out totalOrders)).IgnoreArguments().Return(returnedOrdersCollection);
 
             //Act
             autoMocker.ClassUnderTest.GetOrders(parameters);
@@ -83,8 +91,8 @@ namespace Nop.Plugin.Api.Tests.ControllersTests.Orders
 
             //Arange
             var autoMocker = new RhinoAutoMocker<OrdersController>();
-
-            autoMocker.Get<IOrderApiService>().Stub(x => x.GetOrders()).IgnoreArguments().Return(returnedOrdersDtoCollection);
+            int totalOrders;
+            autoMocker.Get<IOrderApiService>().Stub(x => x.GetOrders(out totalOrders)).IgnoreArguments().Return(returnedOrdersDtoCollection);
 
             //Act
             autoMocker.ClassUnderTest.GetOrders(parameters);
@@ -107,7 +115,8 @@ namespace Nop.Plugin.Api.Tests.ControllersTests.Orders
 
             //Arange
             var autoMocker = new RhinoAutoMocker<OrdersController>();
-            autoMocker.Get<IOrderApiService>().Stub(x => x.GetOrders()).IgnoreArguments().Return(returnedOrdersDtoCollection);
+            int totalOrders;
+            autoMocker.Get<IOrderApiService>().Stub(x => x.GetOrders(out totalOrders)).IgnoreArguments().Return(returnedOrdersDtoCollection);
 
             //Act
             autoMocker.ClassUnderTest.GetOrders(parameters);
